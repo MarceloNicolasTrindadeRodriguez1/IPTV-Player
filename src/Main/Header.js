@@ -1,40 +1,38 @@
 // src/Header.js
 import React from 'react';
-import { AppBar, Toolbar, Typography, IconButton, Box } from '@mui/material';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import LanguageIcon from '@mui/icons-material/Language';
+import { AppBar, Toolbar, Typography, IconButton } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import MenuIcon from '@mui/icons-material/Menu';
+import RefreshIcon from '@mui/icons-material/Refresh';
+import AccountCircle from '@mui/icons-material/AccountCircle';
 
 const Header = () => {
   const currentTime = new Date().toLocaleTimeString();
+  const appBarDarkerColor = '#001a33'; // slightly darker color
 
   return (
-    <AppBar position="static" style={{ backgroundColor: '#3f51b5' }}>
-      <Toolbar>
-        <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
-          <img src={''} alt="Logo" style={{ height: '40px', marginRight: '16px' }} />
-          <Typography variant="h6" component="div" style={{ flexGrow: 1 }}>
-            IPTV Dashboard
+    <AppBar position="static" style={{minHeight : '12vh' ,backgroundColor: appBarDarkerColor }}>
+        <Toolbar>
+          <IconButton edge="start" color="inherit" aria-label="menu">
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" style={{ flexGrow: 1 }}>
+            Jazmin IPTV PRO
           </Typography>
-          <Typography variant="body1" style={{ marginRight: '16px', color: 'white' }}>
+          <Typography variant="subtitle1" style={{ marginRight: 20 }}>
             {currentTime}
           </Typography>
-        </Box>
-        <IconButton color="inherit">
-          <NotificationsIcon />
-        </IconButton>
-        <IconButton color="inherit">
-          <LanguageIcon />
-        </IconButton>
-        <IconButton color="inherit">
-          <SettingsIcon />
-        </IconButton>
-        <IconButton color="inherit">
-          <AccountCircleIcon />
-        </IconButton>
-      </Toolbar>
-    </AppBar>
+          <IconButton color="inherit">
+            <RefreshIcon />
+          </IconButton>
+          <IconButton color="inherit">
+            <AccountCircle />
+          </IconButton>
+          <IconButton color="inherit">
+            <SettingsIcon />
+          </IconButton>
+        </Toolbar>
+      </AppBar>
   );
 };
 

@@ -1,17 +1,33 @@
 import './App.css';
 import Dashboard from './Main/Dashboard';
-import React , { useEffect, useState } from 'react';
-import IPTVPlayer from './Main/IPTVPlayer';
+import React , { useEffect, useState,useRef } from 'react';
+import LiveChannel from './Main/LiveChannel';
 import axios from 'axios';
 import videojs from 'video.js';
 import 'video.js/dist/video-js.css';
-import Hls from 'hls.js';
+import Header from './Main/Header';
+import Movies from './Main/Movies'
 
 const App = () => {
   const videoRef = React.useRef(null);
+  const playerRef = useRef(null); // Ref for the Video.js player instance
   const [page,setPage] = useState('home')
   const [channels,setChannels] = useState();
+  const username = 'N8TV7J6Y'
+  const password = 'NMH0F4'
+  const videoUrl = 'http://tvway.pro/live/N8TV7J6Y/NMH0F4/94596.m3u8'
   const url = 'http://tvway.pro/get.php?username=N8TV7J6Y&password=NMH0F4&type=m3u_plus&output=mpegts'
+
+  useEffect(() => {
+    const getAuth = async() => {
+      await axios.get(`http://tvway.pro/player_api.php?username=${username}&password=${password}`)
+      .then(response =>{
+        console.log('logg ',response)
+      })
+    }  
+
+    getAuth()
+  },[])
 
   useEffect(()=>{
     const getChannels = async() => {
@@ -82,16 +98,50 @@ const App = () => {
     getChannels()
   },[])
   
+  /*useEffect(() =>{
+   if (!playerRef.current) {
+         // Initialize Video.js player
+         playerRef.current = videojs(videoRef.current, { liveui: true });
+       }
+   
+       if (videoUrl) {
+         // Set the source of the video player
+         playerRef.current.src({ src: videoUrl, type: "application/x-mpegurl" });
+   
+         // Play the video
+         playerRef.current.play().catch((err) => {
+           console.error("Video playback failed:", err);
+         });
+       }
+   
+       return () => {
+         if (playerRef.current) {
+           playerRef.current.dispose(); // Dispose of the Video.js player instance on unmount
+           playerRef.current = null;
+         }
+       };
+  },[])*/
+  //http://tvway.pro:80/N8TV7J6Y/NMH0F4/94596
   return (
-
+    <>
+    <Header />
+    {
     page === 'home' ?
       <Dashboard setPage={setPage} />
       :
-    page === 'player' ?
-      <IPTVPlayer channels={channels} />
+    page === 'Live' ?
+      <LiveChannel username={username} password={password} channels={channels} />
       :
+    page === 'Movie' ?
+    <Movies username={username} password={password} channels={channels} />
+    :
       <>
+       <div data-vjs-player>
+       <video ref={videoRef} controls style={{ width: '100%', height: 'auto' }} />
+      </div>
       </>
+      }
+    </>
   );
 };
 

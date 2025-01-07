@@ -50,35 +50,12 @@ const Dashboard = (props) => {
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: appBarBackgroundColor }}>
-      {/* AppBar for the header */}
-      <AppBar position="static" style={{ backgroundColor: appBarDarkerColor }}>
-        <Toolbar>
-          <IconButton edge="start" color="inherit" aria-label="menu">
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" style={{ flexGrow: 1 }}>
-            Jazmin IPTV PRO
-          </Typography>
-          <Typography variant="subtitle1" style={{ marginRight: 20 }}>
-            {currentTime}
-          </Typography>
-          <IconButton color="inherit">
-            <RefreshIcon />
-          </IconButton>
-          <IconButton color="inherit">
-            <AccountCircle />
-          </IconButton>
-          <IconButton color="inherit">
-            <SettingsIcon />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-
+      
       {/* Main content */}
       <Grid container spacing={3} justifyContent="center" style={{ padding: '20px' }}>
         {/* Live TV Card */}
         <Grid item xs={12} sm={6} md={4} >
-          <GradientPaper elevation={3} gradient="linear-gradient(135deg, #0097a7, #80deea)" height="300px" onClick={()=>props.setPage('player')}>
+          <GradientPaper elevation={3} gradient="linear-gradient(135deg, #0097a7, #80deea)" height="300px" onClick={()=>props.setPage('Live')}>
             <LiveTvIcon style={{ fontSize: 120 }} />
             <Typography variant="h4" component="h2" style={{ marginTop: 10 ,fontWeight:600}}>
               Live TV
@@ -88,7 +65,7 @@ const Dashboard = (props) => {
 
         {/* Movies Card */}
         <Grid item xs={12} sm={4}>
-          <GradientPaper elevation={3} gradient="linear-gradient(135deg, #ff5722, #ff8a65)" height="250px">
+          <GradientPaper elevation={3} gradient="linear-gradient(135deg, #ff5722, #ff8a65)" height="250px" onClick={()=>props.setPage('Movie')}>
             <TheatersIcon style={{ fontSize: 90 }} />
             <Typography variant="h4" component="h2" style={{ marginTop: 10,fontWeight:600 }}>
               Movies

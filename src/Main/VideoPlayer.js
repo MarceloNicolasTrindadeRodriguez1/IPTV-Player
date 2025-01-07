@@ -7,28 +7,37 @@ const VideoPlayer = ({ videoUrl }) => {
   const playerRef = useRef(null); // Ref for the Video.js player instance
 
   useEffect(() => {
-    if (!playerRef.current) {
-      // Initialize Video.js player
-      playerRef.current = videojs(videoRef.current, { liveui: true });
-    }
+    // Initialize the Video.js player
+    playerRef.current = videojs(videoRef.current, { liveui: true });
 
-    if (videoUrl) {
-      // Set the source of the video player
-      playerRef.current.src({ src: videoUrl, type: "application/x-mpegurl" });
+    // Set the source of the video player based on the videoUrl
+    const videoType = getVideoType(videoUrl);
+    playerRef.current.src({ src: videoUrl, type: videoType });
 
-      // Play the video
-      playerRef.current.play().catch((err) => {
-        console.error("Video playback failed:", err);
-      });
-    }
+    // Play the video
+    playerRef.current.play().catch((err) => {
+      console.error("Video playback failed:", err);
+    });
 
+    // Cleanup function to dispose the player
     return () => {
       if (playerRef.current) {
-        playerRef.current.dispose(); // Dispose of the Video.js player instance on unmount
-        playerRef.current = null;
+        playerRef.current.dispose();
       }
     };
   }, [videoUrl]); // Re-run effect if videoUrl changes
+
+  // Function to determine the video type based on the URL
+  const getVideoType = (url) => {
+    if (url.endsWith('.m3u8')) {
+      return 'application/x-mpegurl'; // HLS
+    } else if (url.endsWith('.mp4')) {
+      return 'video/mp4'; // MP4
+    } else if (url.endsWith('.mkv')) {
+      return 'video/x-matroska'; // MKV
+    }
+    return ''; // Default or unsupported type
+  };
 
   return (
     <div>
@@ -40,8 +49,6 @@ const VideoPlayer = ({ videoUrl }) => {
           width="640"
           height="360"
           controls
-          muted
-          src={videoRef}
         />
       </div>
     </div>
