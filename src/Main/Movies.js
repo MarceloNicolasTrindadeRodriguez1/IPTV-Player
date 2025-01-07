@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Dialog, DialogActions, DialogContent, DialogTitle, Button, CircularProgress, Typography, Grid } from "@mui/material";
+import { Dialog, DialogActions, DialogContent, Button, CircularProgress, Typography, Grid, Modal, Box,  } from "@mui/material";
+import VideoPlayer from "./VideoPlayer";
 
 const Movies = (props) => {
   const [moviesList, setMoviesList] = useState(null);
@@ -10,6 +11,16 @@ const Movies = (props) => {
   const [movieDetails, setMovieDetails] = useState(null); // Store movie details for the modal
   const [loadingMovieDetails, setLoadingMovieDetails] = useState(false); // Loading state for movie details
   const [showModal, setShowModal] = useState(false); // Control modal visibility
+  const [VideoPlaying, setVideoPlaying] = useState({isplaying:false,url:''});
+
+  const handlePlayClick = () => {
+    setShowModal(false); // Close modal after play
+    setVideoPlaying({isplaying:true,url:`http://tvway.pro/movie/${props.username}/${props.password}/${movieDetails.movie_data.stream_id}.${movieDetails.movie_data.container_extension}`});
+  };
+
+  const handleCloseVideo = () => {
+    setVideoPlaying({isplaying:false,url:''});
+  };
 
   const transformCategories = async (categories) => {
     const result = {};
@@ -73,7 +84,7 @@ const Movies = (props) => {
       const response = await axios.get(
         `http://tvway.pro/player_api.php?username=${props.username}&password=${props.password}&action=get_vod_info&vod_id=${movie.stream_id}`
       );
-      setMovieDetails(response.data.info); // Store the movie details
+      setMovieDetails(response.data); // Store the movie details
       setShowModal(true); // Show modal with movie details
     } catch (error) {
       console.error("Error fetching movie details:", error);
@@ -86,11 +97,7 @@ const Movies = (props) => {
     setShowModal(false);
   };
 
-  const handlePlayClick = () => {
-    // Simulate playing the movie (you can replace this logic with actual movie playback)
-    alert(`Now playing: ${selectedMovie.name}`);
-    setShowModal(false); // Close modal after play
-  };
+  
 
   return (
     <div style={{ display: "flex", height: "100vh" }}>
@@ -117,6 +124,18 @@ const Movies = (props) => {
                   borderBottom: "1px solid #ccc",
                   transition: "background-color 0.3s, color 0.3s",
                   backgroundColor: selectedCategoryId === categoryId ? "#f0f0f0" : "transparent", 
+                }}
+                onMouseEnter={(e) => {
+                  if(selectedCategoryId !== categoryId){
+                    e.target.style.backgroundColor = "#f0f0f0"; // Light gray on hover
+                    e.target.style.color = "#007BFF"; // Blue text on hover
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if(selectedCategoryId !== categoryId){
+                    e.target.style.backgroundColor = "transparent"; // Remove background
+                    e.target.style.color = "black"; // Reset text color
+                  }
                 }}
               >
                 {moviesList[categoryId].category_name}
@@ -154,6 +173,12 @@ const Movies = (props) => {
                     padding: "10px",
                     transition: "transform 0.3s",
                   }}
+                  onMouseEnter={(e) => {
+                    e.target.style.transform = "scale(1.05)"; // Slight zoom effect
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.transform = "scale(1)"; // Reset zoom
+                  }}
                 >
                   <img
                     src={movie.stream_icon}
@@ -172,59 +197,138 @@ const Movies = (props) => {
       </div>
 
       {/* Movie Details Modal */}
-      <Dialog open={showModal} onClose={handleCloseModal} maxWidth="md" fullWidth>
-        <DialogContent>
-          {loadingMovieDetails ? (
-            <div style={{ display: "flex", justifyContent: "center", margin: "20px" }}>
-              <CircularProgress />
-            </div>
-          ) : (
-            movieDetails && (
-              <Grid container spacing={2}>
-                {/* Left side - Movie Image */}
-                <Grid item xs={12} sm={4} style={{ display: "flex", justifyContent: "center" }}>
-                  <img
-                    src={movieDetails.cover_big}
-                    alt={movieDetails.name}
-                    width="100%"
-                    height="auto"
-                    style={{ borderRadius: "8px" }}
-                  />
-                </Grid>
-
-                {/* Right side - Movie Information */}
-                <Grid item xs={12} sm={8}>
-                  <Typography variant="h5" gutterBottom>
-                    {movieDetails.name} ({movieDetails.releasedate.split("-")[0]})
-                  </Typography>
-                  <Typography variant="body1" color="textSecondary" gutterBottom>
-                    {movieDetails.genre} - {movieDetails.duration} mins
-                  </Typography>
-                  <Typography variant="h6" gutterBottom>
-                    Rating: {movieDetails.rating}
-                  </Typography>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    fullWidth
-                    onClick={handlePlayClick}
-                    style={{ marginBottom: "20px" }}
-                  >
-                    PLAY
-                  </Button>
-                  <Typography variant="body1" paragraph>
-                    {movieDetails.description}
-                  </Typography>
-                  <Typography variant="h6" gutterBottom>
-                    Cast:
-                  </Typography>
-                  <Typography variant="body1">{movieDetails.cast}</Typography>
-                </Grid>
+      <Dialog
+      open={showModal}
+      onClose={handleCloseModal}
+      maxWidth="md"
+      fullWidth
+      PaperProps={{
+        style: {
+          position: 'relative', // Required for absolute positioning of overlay
+          backgroundImage: movieDetails ? `url(${movieDetails.info.backdrop_path? movieDetails.info.backdrop_path[0]: movieDetails.info.cover_big})` : 'none',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          color: '#fff', // Set text color to white for better contrast
+        },
+      }}
+    >
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0, 0, 0, 0.5)', // Dark overlay with 50% opacity
+          zIndex: 1, // Ensure the overlay is above the background
+        }}
+      />
+      <DialogContent style={{ position: 'relative', zIndex: 2 }}>
+        {loadingMovieDetails ? (
+          <div style={{ display: "flex", justifyContent: "center", margin: "20px" }}>
+            <CircularProgress />
+          </div>
+        ) : (
+          movieDetails && (
+            <Grid container spacing={2}>
+              {/* Left side - Movie Image */}
+              <Grid item xs={12} sm={4} style={{ display: "flex", justifyContent: "center" }}>
+                <img
+                  src={movieDetails.info.cover_big}
+                  alt={movieDetails.info.name}
+                  width="100%"
+                  height="auto"
+                  style={{ borderRadius: "8px" }}
+                />
               </Grid>
-            )
-          )}
-        </DialogContent>
-      </Dialog>
+
+              {/* Right side - Movie Information */}
+              <Grid item xs={12} sm={8}>
+                <Typography variant="h5" gutterBottom>
+                  {movieDetails.info.name} ({movieDetails.info.releasedate.split("-")[0]})
+                </Typography>
+                <Typography variant="body1"  gutterBottom>
+                  {movieDetails.info.genre} - {movieDetails.info.duration} mins
+                </Typography>
+                <div style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
+                  <div style={{ position: 'relative', display: 'inline-flex', alignItems: 'center' }}>
+                    <CircularProgress
+                      variant="determinate"
+                      value={parseFloat(movieDetails.info.rating) * 10} // Convert to percentage
+                      size={60} // Circle size
+                      style={{  }}
+                      thickness={4} // Circle thickness
+                    />
+                    <Typography
+                      variant="body1"
+                      style={{
+                        position: 'absolute',
+                        left: '50%',
+                        top: '50%',
+                        transform: 'translate(-50%, -50%)', // Center the text
+                        color: '#fff',
+                      }}
+                    >
+                      {`${Math.round(parseFloat(movieDetails.info.rating) * 10)}%`}
+                    </Typography>
+                  </div>
+                  <Typography variant="body1" style={{marginLeft:10}}  gutterBottom>
+                   User Score
+                </Typography>
+                </div>
+                
+                <Button
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                  onClick={handlePlayClick}
+                  style={{ marginBottom: "20px" }}
+                >
+                  PLAY
+                </Button>
+                <Typography variant="body1" paragraph>
+                  {movieDetails.info.description}
+                </Typography>
+                <Typography variant="h6" gutterBottom>
+                  Cast:
+                </Typography>
+                <Typography variant="body1">{movieDetails.info.cast}</Typography>
+              </Grid>
+            </Grid>
+          )
+        )}
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleCloseModal} color="primary">
+          Close
+        </Button>
+      </DialogActions>
+    </Dialog>
+    <Modal open={VideoPlaying.isplaying} onClose={() => {setVideoPlaying({isplaying:false,url:''})}} >
+      <Box
+        sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '90%',
+          height: '90%',
+          bgcolor: 'black',
+          boxShadow: 24,
+          borderRadius: 2,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <video
+          src={VideoPlaying.url}
+          controls
+          autoPlay
+          style={{ width: '100%', height: '100%' }}
+        />
+      </Box>
+    </Modal>
     </div>
   );
 };
