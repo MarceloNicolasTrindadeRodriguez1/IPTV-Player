@@ -5,6 +5,7 @@ const Movies = (props) => {
   const [moviesList, setMoviesList] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedMovie, setSelectedMovie] = useState(null);
+  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
 
   const transformCategories = async (categories) => {
     const result = {};
@@ -57,6 +58,7 @@ const Movies = (props) => {
   const handleCategoryClick = (categoryId) => {
     setSelectedCategory(moviesList[categoryId]);
     setSelectedMovie(null); // Reset movie when category changes
+    setSelectedCategoryId(categoryId); // Set selected category ID
   };
 
   const handleMovieClick = (movie) => {
@@ -76,13 +78,32 @@ const Movies = (props) => {
         }}
       >
         <h3>Categories</h3>
-        <ul>
+        <ul style={{ padding: 0, margin: 0 }}>
           {moviesList &&
             Object.keys(moviesList).map((categoryId) => (
               <li
                 key={categoryId}
                 onClick={() => handleCategoryClick(categoryId)}
-                style={{ cursor: "pointer" }}
+                style={{
+                  cursor: "pointer",
+                  padding: "10px",
+                  borderBottom: "1px solid #ccc",
+                  transition: "background-color 0.3s, color 0.3s",
+                  backgroundColor: selectedCategoryId === categoryId ? "#f0f0f0" : "transparent", 
+
+                }}
+                onMouseEnter={(e) => {
+                  if(selectedCategoryId !== categoryId){
+                    e.target.style.backgroundColor = "#f0f0f0"; // Light gray on hover
+                    e.target.style.color = "#007BFF"; // Blue text on hover
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if(selectedCategoryId !== categoryId){
+                    e.target.style.backgroundColor = "transparent"; // Remove background
+                    e.target.style.color = "black"; // Reset text color
+                  }
+                }}
               >
                 {moviesList[categoryId].category_name}
               </li>
@@ -113,7 +134,18 @@ const Movies = (props) => {
                 <div
                   key={movie.stream_id}
                   onClick={() => handleMovieClick(movie)}
-                  style={{ cursor: "pointer", textAlign: "center" }}
+                  style={{
+                    cursor: "pointer",
+                    textAlign: "center",
+                    padding: "10px",
+                    transition: "transform 0.3s",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.transform = "scale(1.05)"; // Slight zoom effect
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.transform = "scale(1)"; // Reset zoom
+                  }}
                 >
                   <img
                     src={movie.stream_icon}
