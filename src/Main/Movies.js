@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Dialog, DialogActions, DialogContent, Button, CircularProgress, Typography, Grid, Modal, Box,  } from "@mui/material";
-import VideoPlayer from "./VideoPlayer";
+import './Movies.css'
 
 const Movies = (props) => {
   const [moviesList, setMoviesList] = useState(null);
@@ -100,18 +100,19 @@ const Movies = (props) => {
   
 
   return (
-    <div style={{ display: "flex", height: "100vh" }}>
-      {/* Left Column - Categories */}
+    moviesList?
+    <div style={{ display: "flex", height: "100vh" ,backgroundColor:'#001f3f'}}>
+      <>
       <div
+        className="custom-scrollbar" // Add this class to your div
         style={{
           width: "25%",
-          borderRight: "1px solid #ccc",
           padding: "10px",
           overflowY: "auto",
           maxHeight: "100vh",
         }}
       >
-        <h3>Categories</h3>
+        <h3 style={{ color: 'white' }}>Categories</h3>
         <ul style={{ padding: 0, margin: 0 }}>
           {moviesList &&
             Object.keys(moviesList).map((categoryId) => (
@@ -121,20 +122,21 @@ const Movies = (props) => {
                 style={{
                   cursor: "pointer",
                   padding: "10px",
-                  borderBottom: "1px solid #ccc",
                   transition: "background-color 0.3s, color 0.3s",
-                  backgroundColor: selectedCategoryId === categoryId ? "#f0f0f0" : "transparent", 
+                  backgroundColor: selectedCategoryId === categoryId ? "#f0f0f0" : "transparent",
+                  color: 'white',
+                  borderRadius: '20px',
                 }}
                 onMouseEnter={(e) => {
-                  if(selectedCategoryId !== categoryId){
+                  if (selectedCategoryId !== categoryId) {
                     e.target.style.backgroundColor = "#f0f0f0"; // Light gray on hover
-                    e.target.style.color = "#007BFF"; // Blue text on hover
+                    e.target.style.color = "black"; // Blue text on hover
                   }
                 }}
                 onMouseLeave={(e) => {
-                  if(selectedCategoryId !== categoryId){
+                  if (selectedCategoryId !== categoryId) {
                     e.target.style.backgroundColor = "transparent"; // Remove background
-                    e.target.style.color = "black"; // Reset text color
+                    e.target.style.color = "white"; // Reset text color
                   }
                 }}
               >
@@ -143,6 +145,7 @@ const Movies = (props) => {
             ))}
         </ul>
       </div>
+
 
       {/* Right Column - Movies */}
       <div
@@ -186,13 +189,13 @@ const Movies = (props) => {
                     width="100"
                     height="auto"
                   />
-                  <p>{movie.name}</p>
+                  <p style={{color:'white'}}>{movie.name}</p>
                 </div>
               ))}
             </div>
           </div>
         ) : (
-          <p>Please select a category to see the movies.</p>
+          <></>
         )}
       </div>
 
@@ -329,7 +332,27 @@ const Movies = (props) => {
         />
       </Box>
     </Modal>
+    </>
     </div>
+    :
+    <>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column', // Stack items vertically
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        backgroundColor: 'rgba(255, 255, 255, 0.8)', // Optional: Add a light background
+      }}
+    >
+      <CircularProgress size={80} /> {/* Increase size of CircularProgress */}
+      <Typography variant="h4" sx={{ marginTop: 2 }}> {/* Big loading text */}
+        Loading Movies...
+      </Typography>
+    </Box>
+    </>
+    
   );
 };
 
