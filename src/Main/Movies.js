@@ -99,10 +99,8 @@ const Movies = (props) => {
           maxHeight: "100vh",
         }}
       >
-        <h3>Movies</h3>
         {selectedCategory ? (
           <div>
-            <h4>{selectedCategory.category_name}</h4>
             <div
               style={{
                 display: "grid",

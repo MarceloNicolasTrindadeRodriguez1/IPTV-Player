@@ -11,7 +11,7 @@ const Header = () => {
   const appBarDarkerColor = '#001a33'; // slightly darker color
 
   return (
-    <AppBar position="static" style={{minHeight : '12vh' ,backgroundColor: appBarDarkerColor }}>
+    <AppBar position="static" style={{minHeight : '10vh' ,backgroundColor: appBarDarkerColor }}>
         <Toolbar>
           <IconButton edge="start" color="inherit" aria-label="menu">
             <MenuIcon />
