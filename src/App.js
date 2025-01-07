@@ -1,12 +1,11 @@
 import './App.css';
 import Dashboard from './Main/Dashboard';
 import React , { useEffect, useState,useRef } from 'react';
-import LiveChannel from './Main/LiveChannel';
+import LiveChannel from './Main/Live/LiveChannel';
 import axios from 'axios';
-import videojs from 'video.js';
 import 'video.js/dist/video-js.css';
 import Header from './Main/Header';
-import Movies from './Main/Movies'
+import Movies from './Main/Movie/Movies'
 
 const App = () => {
   const videoRef = React.useRef(null);
@@ -124,7 +123,7 @@ const App = () => {
   //http://tvway.pro:80/N8TV7J6Y/NMH0F4/94596
   return (
     <>
-    <Header />
+    <Header setPage={setPage} />
     {
     page === 'home' ?
       <Dashboard setPage={setPage} />

@@ -46,7 +46,8 @@ const VideoPlayer = ({ videoUrl }) => {
           ref={videoRef}
           id="live-video"
           className="video-js vjs-default-skin vjs-live vjs-liveui"
-          style={{ width: '100%', height: '100%' }}
+          width="640"
+          height="360"
           controls
         />
       </div>

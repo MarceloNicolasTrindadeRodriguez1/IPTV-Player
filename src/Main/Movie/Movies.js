@@ -6,7 +6,6 @@ import './Movies.css'
 const Movies = (props) => {
   const [moviesList, setMoviesList] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [selectedMovie, setSelectedMovie] = useState(null);
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const [movieDetails, setMovieDetails] = useState(null); // Store movie details for the modal
   const [loadingMovieDetails, setLoadingMovieDetails] = useState(false); // Loading state for movie details
@@ -72,12 +71,10 @@ const Movies = (props) => {
 
   const handleCategoryClick = (categoryId) => {
     setSelectedCategory(moviesList[categoryId]);
-    setSelectedMovie(null); // Reset movie when category changes
     setSelectedCategoryId(categoryId); // Set selected category ID
   };
 
   const handleMovieClick = async (movie) => {
-    setSelectedMovie(movie);
     setLoadingMovieDetails(true); // Start loading movie details
     try {
       // Fetch the details for the selected movie
@@ -307,7 +304,7 @@ const Movies = (props) => {
         </Button>
       </DialogActions>
     </Dialog>
-    <Modal open={VideoPlaying.isplaying} onClose={() => {setVideoPlaying({isplaying:false,url:''})}} >
+    <Modal open={VideoPlaying.isplaying} onClose={() => {handleCloseVideo()}} >
       <Box
         sx={{
           position: 'absolute',

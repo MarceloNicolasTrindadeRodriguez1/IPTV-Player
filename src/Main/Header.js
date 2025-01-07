@@ -6,7 +6,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 
-const Header = () => {
+const Header = (props) => {
   const currentTime = new Date().toLocaleTimeString();
   const appBarDarkerColor = '#001a33'; // slightly darker color
 
@@ -16,8 +16,8 @@ const Header = () => {
           <IconButton edge="start" color="inherit" aria-label="menu">
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" style={{ flexGrow: 1 }}>
-            Jazmin IPTV PRO
+          <Typography variant="h6" style={{ flexGrow: 1 }} onClick={() => props.setPage('home')} >
+            Jazmin PRO
           </Typography>
           <Typography variant="subtitle1" style={{ marginRight: 20 }}>
             {currentTime}

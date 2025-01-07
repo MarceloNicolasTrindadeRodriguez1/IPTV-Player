@@ -46,7 +46,6 @@ const Dashboard = (props) => {
       return () => clearInterval(timer);
     }, []);
   const appBarBackgroundColor = '#001f3f'; // original color
-  const appBarDarkerColor = '#001a33'; // slightly darker color
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: appBarBackgroundColor }}>
@@ -64,8 +63,8 @@ const Dashboard = (props) => {
         </Grid>
 
         {/* Movies Card */}
-        <Grid item xs={12} sm={4}>
-          <GradientPaper elevation={3} gradient="linear-gradient(135deg, #ff5722, #ff8a65)" height="250px" onClick={()=>props.setPage('Movie')}>
+        <Grid item xs={12} sm={6} md={4}>
+          <GradientPaper elevation={3} gradient="linear-gradient(135deg, #ff5722, #ff8a65)" height="300px" onClick={()=>props.setPage('Movie')}>
             <TheatersIcon style={{ fontSize: 90 }} />
             <Typography variant="h4" component="h2" style={{ marginTop: 10,fontWeight:600 }}>
               Movies
@@ -74,8 +73,8 @@ const Dashboard = (props) => {
         </Grid>
 
         {/* Series Card */}
-        <Grid item xs={12} sm={4}>
-          <GradientPaper elevation={3} gradient="linear-gradient(135deg, #673ab7, #9575cd)" height='250px'>
+        <Grid item xs={12} sm={6} md={4}>
+          <GradientPaper elevation={3} gradient="linear-gradient(135deg, #673ab7, #9575cd)" height='300px'>
             <TvIcon style={{ fontSize: 90 }} />
             <Typography variant="h4" component="h2" style={{ marginTop: 10,fontWeight:600 }}>
               Series
@@ -83,26 +82,6 @@ const Dashboard = (props) => {
           </GradientPaper>
         </Grid>
 
-        {/* Update EPG, Account, and Catch Up Buttons */}
-        <Grid item xs={12} style={{ marginTop: '20px' }}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} sm={4}>
-              <Paper style={{ padding: 20, background: '#4caf50', color: '#fff', textAlign: 'center' }}>
-                <Typography variant="h6">UPDATE EPG</Typography>
-              </Paper>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <Paper style={{ padding: 20, background: '#4caf50', color: '#fff', textAlign: 'center' }}>
-                <Typography variant="h6">ACCOUNT</Typography>
-              </Paper>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <Paper style={{ padding: 20, background: '#4caf50', color: '#fff', textAlign: 'center' }}>
-                <Typography variant="h6">CATCH UP</Typography>
-              </Paper>
-            </Grid>
-          </Grid>
-        </Grid>
 
         {/* Footer */}
         <Grid item xs={12} style={{ textAlign: 'center', marginTop: '20px', color: '#fff' }}>
