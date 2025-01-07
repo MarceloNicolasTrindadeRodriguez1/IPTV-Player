@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Dialog, DialogActions, DialogContent, DialogTitle, Button, CircularProgress, Typography, Grid } from "@mui/material";
 
 const Movies = (props) => {
   const [moviesList, setMoviesList] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
+  const [movieDetails, setMovieDetails] = useState(null); // Store movie details for the modal
+  const [loadingMovieDetails, setLoadingMovieDetails] = useState(false); // Loading state for movie details
+  const [showModal, setShowModal] = useState(false); // Control modal visibility
 
   const transformCategories = async (categories) => {
     const result = {};
@@ -61,8 +65,31 @@ const Movies = (props) => {
     setSelectedCategoryId(categoryId); // Set selected category ID
   };
 
-  const handleMovieClick = (movie) => {
+  const handleMovieClick = async (movie) => {
     setSelectedMovie(movie);
+    setLoadingMovieDetails(true); // Start loading movie details
+    try {
+      // Fetch the details for the selected movie
+      const response = await axios.get(
+        `http://tvway.pro/player_api.php?username=${props.username}&password=${props.password}&action=get_vod_info&vod_id=${movie.stream_id}`
+      );
+      setMovieDetails(response.data.info); // Store the movie details
+      setShowModal(true); // Show modal with movie details
+    } catch (error) {
+      console.error("Error fetching movie details:", error);
+    } finally {
+      setLoadingMovieDetails(false); // Stop loading state
+    }
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const handlePlayClick = () => {
+    // Simulate playing the movie (you can replace this logic with actual movie playback)
+    alert(`Now playing: ${selectedMovie.name}`);
+    setShowModal(false); // Close modal after play
   };
 
   return (
@@ -90,19 +117,6 @@ const Movies = (props) => {
                   borderBottom: "1px solid #ccc",
                   transition: "background-color 0.3s, color 0.3s",
                   backgroundColor: selectedCategoryId === categoryId ? "#f0f0f0" : "transparent", 
-
-                }}
-                onMouseEnter={(e) => {
-                  if(selectedCategoryId !== categoryId){
-                    e.target.style.backgroundColor = "#f0f0f0"; // Light gray on hover
-                    e.target.style.color = "#007BFF"; // Blue text on hover
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if(selectedCategoryId !== categoryId){
-                    e.target.style.backgroundColor = "transparent"; // Remove background
-                    e.target.style.color = "black"; // Reset text color
-                  }
                 }}
               >
                 {moviesList[categoryId].category_name}
@@ -140,45 +154,77 @@ const Movies = (props) => {
                     padding: "10px",
                     transition: "transform 0.3s",
                   }}
-                  onMouseEnter={(e) => {
-                    e.target.style.transform = "scale(1.05)"; // Slight zoom effect
-                  }}
-                  onMouseLeave={(e) => {
-                    e.target.style.transform = "scale(1)"; // Reset zoom
-                  }}
                 >
                   <img
                     src={movie.stream_icon}
                     alt={movie.name}
-                    width="100" // Adjust as needed
+                    width="100"
                     height="auto"
                   />
                   <p>{movie.name}</p>
                 </div>
               ))}
             </div>
-            {selectedMovie && (
-              <div>
-                <h4>{selectedMovie.name}</h4>
-                <img
-                  src={selectedMovie.stream_icon}
-                  alt={selectedMovie.name}
-                  width="200"
-                  height="auto"
-                />
-                <video
-                  src={`http://tvway.pro/movie/${props.username}/${props.password}/${selectedMovie.stream_id}.${selectedMovie.container_extension}`}
-                  width="640"
-                  height="360"
-                  controls
-                />
-              </div>
-            )}
           </div>
         ) : (
           <p>Please select a category to see the movies.</p>
         )}
       </div>
+
+      {/* Movie Details Modal */}
+      <Dialog open={showModal} onClose={handleCloseModal} maxWidth="md" fullWidth>
+        <DialogContent>
+          {loadingMovieDetails ? (
+            <div style={{ display: "flex", justifyContent: "center", margin: "20px" }}>
+              <CircularProgress />
+            </div>
+          ) : (
+            movieDetails && (
+              <Grid container spacing={2}>
+                {/* Left side - Movie Image */}
+                <Grid item xs={12} sm={4} style={{ display: "flex", justifyContent: "center" }}>
+                  <img
+                    src={movieDetails.cover_big}
+                    alt={movieDetails.name}
+                    width="100%"
+                    height="auto"
+                    style={{ borderRadius: "8px" }}
+                  />
+                </Grid>
+
+                {/* Right side - Movie Information */}
+                <Grid item xs={12} sm={8}>
+                  <Typography variant="h5" gutterBottom>
+                    {movieDetails.name} ({movieDetails.releasedate.split("-")[0]})
+                  </Typography>
+                  <Typography variant="body1" color="textSecondary" gutterBottom>
+                    {movieDetails.genre} - {movieDetails.duration} mins
+                  </Typography>
+                  <Typography variant="h6" gutterBottom>
+                    Rating: {movieDetails.rating}
+                  </Typography>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    fullWidth
+                    onClick={handlePlayClick}
+                    style={{ marginBottom: "20px" }}
+                  >
+                    PLAY
+                  </Button>
+                  <Typography variant="body1" paragraph>
+                    {movieDetails.description}
+                  </Typography>
+                  <Typography variant="h6" gutterBottom>
+                    Cast:
+                  </Typography>
+                  <Typography variant="body1">{movieDetails.cast}</Typography>
+                </Grid>
+              </Grid>
+            )
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
