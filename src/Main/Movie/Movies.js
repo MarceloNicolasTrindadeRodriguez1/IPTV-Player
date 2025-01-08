@@ -12,7 +12,7 @@ const Movies = (props) => {
   const [showModal, setShowModal] = useState(false); // Control modal visibility
   const [VideoPlaying, setVideoPlaying] = useState({isplaying:false,url:''});
 
-  const handlePlayClick = () => {
+  const handlePlayClick = async() => {
     setShowModal(false); // Close modal after play
     setVideoPlaying({isplaying:true,url:`http://tvway.pro/movie/${props.username}/${props.password}/${movieDetails.movie_data.stream_id}.${movieDetails.movie_data.container_extension}`});
   };

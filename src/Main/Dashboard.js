@@ -53,7 +53,7 @@ const Dashboard = (props) => {
       {/* Main content */}
       <Grid container spacing={3} justifyContent="center" style={{ padding: '20px' }}>
         {/* Live TV Card */}
-        <Grid item xs={12} sm={6} md={4} >
+        <Grid item xs={12} sm={6} md={4} style={{ cursor:'pointer' }} >
           <GradientPaper elevation={3} gradient="linear-gradient(135deg, #0097a7, #80deea)" height="300px" onClick={()=>props.setPage('Live')}>
             <LiveTvIcon style={{ fontSize: 120 }} />
             <Typography variant="h4" component="h2" style={{ marginTop: 10 ,fontWeight:600}}>
@@ -63,7 +63,7 @@ const Dashboard = (props) => {
         </Grid>
 
         {/* Movies Card */}
-        <Grid item xs={12} sm={6} md={4}>
+        <Grid item xs={12} sm={6} md={4} style={{ cursor:'pointer' }} >
           <GradientPaper elevation={3} gradient="linear-gradient(135deg, #ff5722, #ff8a65)" height="300px" onClick={()=>props.setPage('Movie')}>
             <TheatersIcon style={{ fontSize: 90 }} />
             <Typography variant="h4" component="h2" style={{ marginTop: 10,fontWeight:600 }}>
@@ -73,8 +73,8 @@ const Dashboard = (props) => {
         </Grid>
 
         {/* Series Card */}
-        <Grid item xs={12} sm={6} md={4}>
-          <GradientPaper elevation={3} gradient="linear-gradient(135deg, #673ab7, #9575cd)" height='300px'>
+        <Grid item xs={12} sm={6} md={4} style={{ cursor:'pointer' }} >
+          <GradientPaper elevation={3} gradient="linear-gradient(135deg, #673ab7, #9575cd)" height='300px'  onClick={()=>props.setPage('Serie')}>
             <TvIcon style={{ fontSize: 90 }} />
             <Typography variant="h4" component="h2" style={{ marginTop: 10,fontWeight:600 }}>
               Series

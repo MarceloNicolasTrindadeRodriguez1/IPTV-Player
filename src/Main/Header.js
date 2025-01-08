@@ -13,11 +13,8 @@ const Header = (props) => {
   return (
     <AppBar position="static" style={{ backgroundColor: appBarDarkerColor }}>
         <Toolbar>
-          <IconButton edge="start" color="inherit" aria-label="menu">
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" style={{ flexGrow: 1 }} onClick={() => props.setPage('home')} >
-            Jazmin PRO
+          <Typography variant="h6" style={{ flexGrow: 1,cursor:'pointer' }} onClick={() => props.setPage('home')} >
+            Jazmin Player PRO 
           </Typography>
           <Typography variant="subtitle1" style={{ marginRight: 20 }}>
             {currentTime}

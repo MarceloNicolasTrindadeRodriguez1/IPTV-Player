@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import VideoPlayer from "../VideoPlayer"; 
 import axios from "axios";
 import './LiveChannel.css'
+import { Box, CircularProgress, Typography } from "@mui/material";
 
 const LiveChannel = (props) => {
   const [channelsList, setChannelsList] = useState();
@@ -167,7 +168,24 @@ const LiveChannel = (props) => {
           )
         }     
       </div>
-      : <></>
+    :
+    <>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column', // Stack items vertically
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        backgroundColor: 'rgba(255, 255, 255, 0.8)', // Optional: Add a light background
+      }}
+    >
+      <CircularProgress size={80} /> {/* Increase size of CircularProgress */}
+      <Typography variant="h4" sx={{ marginTop: 2 }}> {/* Big loading text */}
+        Loading Live Channel...
+      </Typography>
+    </Box>
+    </>
   );
 };
 
