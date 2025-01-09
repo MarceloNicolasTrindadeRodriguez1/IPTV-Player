@@ -10,18 +10,18 @@ import { CssBaseline } from '@mui/material';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#ff5722', // Orange
+      main: '#00B0FF', // Orange
     },
     secondary: {
       main: '#673ab7', // Deep Purple
     },
     background: {
-      default: '#e0f7fa', // Light Cyan
       paper: '#ffffff',
     },
     common: {
       white: '#ffffff',
     },
+    
   },
 });
 

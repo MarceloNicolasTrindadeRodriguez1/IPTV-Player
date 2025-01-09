@@ -14,7 +14,7 @@ const Movies = (props) => {
 
   const handlePlayClick = async() => {
     setShowModal(false); // Close modal after play
-    setVideoPlaying({isplaying:true,url:`http://tvway.pro/movie/${props.username}/${props.password}/${movieDetails.movie_data.stream_id}.${movieDetails.movie_data.container_extension}`});
+    setVideoPlaying({isplaying:true,url:`http://tvway.pro/movie/${props.credentials.username}/${props.credentials.password}/${movieDetails.movie_data.stream_id}.${movieDetails.movie_data.container_extension}`});
   };
 
   const handleCloseVideo = () => {
@@ -36,7 +36,7 @@ const Movies = (props) => {
     // Fetch and add movies to categories
     try {
       const response = await axios.get(
-        `http://tvway.pro/player_api.php?username=${props.username}&password=${props.password}&action=get_vod_streams`
+        `http://tvway.pro/player_api.php?username=${props.credentials.username}&password=${props.credentials.password}&action=get_vod_streams`
       );
       addMoviesToCategories(result, response.data);
     } catch (error) {
@@ -58,7 +58,7 @@ const Movies = (props) => {
     const getMovies = async () => {
       try {
         const response = await axios.get(
-          `http://tvway.pro/player_api.php?username=${props.username}&password=${props.password}&action=get_vod_categories`
+          `http://tvway.pro/player_api.php?username=${props.credentials.username}&password=${props.credentials.password}&action=get_vod_categories`
         );
         transformCategories(response.data);
       } catch (error) {
@@ -67,7 +67,7 @@ const Movies = (props) => {
     };
 
     getMovies();
-  }, [props.username, props.password]);
+  }, [props.credentials.username, props.credentials.password]);
 
   const handleCategoryClick = (categoryId) => {
     setSelectedCategory(moviesList[categoryId]);
@@ -79,7 +79,7 @@ const Movies = (props) => {
     try {
       // Fetch the details for the selected movie
       const response = await axios.get(
-        `http://tvway.pro/player_api.php?username=${props.username}&password=${props.password}&action=get_vod_info&vod_id=${movie.stream_id}`
+        `http://tvway.pro/player_api.php?username=${props.credentials.username}&password=${props.credentials.password}&action=get_vod_info&vod_id=${movie.stream_id}`
       );
       setMovieDetails(response.data); // Store the movie details
       setShowModal(true); // Show modal with movie details

@@ -48,7 +48,7 @@ const Dashboard = (props) => {
   const appBarBackgroundColor = '#001f3f'; // original color
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: appBarBackgroundColor }}>
+    <div style={{ marginTop:20,minHeight: '100vh', backgroundColor: appBarBackgroundColor }}>
       
       {/* Main content */}
       <Grid container spacing={3} justifyContent="center" style={{ padding: '20px' }}>
@@ -86,7 +86,6 @@ const Dashboard = (props) => {
         {/* Footer */}
         <Grid item xs={12} style={{ textAlign: 'center', marginTop: '20px', color: '#fff' }}>
           <Typography>Expiration: Unlimited</Typography>
-          <Typography>Logged in as: Yanis</Typography>
         </Grid>
       </Grid>
     </div>

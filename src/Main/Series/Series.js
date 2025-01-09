@@ -16,11 +16,14 @@ const Series = (props) => {
   const handlePlayClick = async(episode) => {
     setShowModal(false); 
 
-    setVideoPlaying({isplaying:true,url:`http://tvway.pro/series/${props.username}/${props.password}/${episode.id}.${episode.container_extension}`});
+    setVideoPlaying({isplaying:true,url:`http://tvway.pro/series/${props.credentials.username}/${props.credentials.password}/${episode.id}.${episode.container_extension}`});
   };
 
   const handleCloseVideo = () => {
     setVideoPlaying({isplaying:false,url:''});
+    setSelectedSeason(null)
+    setSerieDetails(null)
+    setShowModal(false);
   };
 
   const transformCategories = async (categories) => {
@@ -37,7 +40,7 @@ const Series = (props) => {
     // Fetch and add series to categories
     try {
       const response = await axios.get(
-        `http://tvway.pro/player_api.php?username=${props.username}&password=${props.password}&action=get_series`
+        `http://tvway.pro/player_api.php?username=${props.credentials.username}&password=${props.credentials.password}&action=get_series`
       );
       addSeriesToCategories(result, response.data);
     } catch (error) {
@@ -59,7 +62,7 @@ const Series = (props) => {
     const getSeries = async () => {
       try {
         const response = await axios.get(
-          `http://tvway.pro/player_api.php?username=${props.username}&password=${props.password}&action=get_series_categories`
+          `http://tvway.pro/player_api.php?username=${props.credentials.username}&password=${props.credentials.password}&action=get_series_categories`
         );
         transformCategories(response.data);
       } catch (error) {
@@ -68,7 +71,7 @@ const Series = (props) => {
     };
 
     getSeries();
-  }, [props.username, props.password]);
+  }, [props.credentials.username, props.credentials.password]);
 
   const handleCategoryClick = (categoryId) => {
     setSelectedCategory(seriesList[categoryId]);
@@ -80,7 +83,7 @@ const Series = (props) => {
     try {
       // Fetch the details for the selected movie
       const response = await axios.get(
-        `http://tvway.pro/player_api.php?username=${props.username}&password=${props.password}&action=get_series_info&series_id=${serie.series_id}`
+        `http://tvway.pro/player_api.php?username=${props.credentials.username}&password=${props.credentials.password}&action=get_series_info&series_id=${serie.series_id}`
       );
       setSerieDetails(response.data); // Store the movie details
       setShowModal(true); // Show modal with movie details
@@ -295,7 +298,7 @@ const Series = (props) => {
                         </Typography>
                         {/* Seasons List */}
                         <Grid container spacing={2}>
-                        {serieDetails.seasons.map((season, index) => (
+                        {Object.entries(serieDetails.episodes).map(([index, episode]) => (
                             <Grid item xs={12} sm={3} key={index}>
                             <Button 
                                 variant="outlined" 
@@ -321,7 +324,7 @@ const Series = (props) => {
                                 }
                                 }}
                                 >
-                                {season.name}
+                                Season {index}
                             </Button>
                             </Grid>
                         ))}
@@ -330,11 +333,8 @@ const Series = (props) => {
                         {/* Episodes List */}
                         {selectedSeason !== null && (
                         <div style={{ marginTop: '20px' }}>
-                            <Typography variant="h6" gutterBottom>
-                            Épisodes ({serieDetails.seasons[selectedSeason].name})
-                            </Typography>
                             <Grid container spacing={2}>
-                            {serieDetails.episodes[selectedSeason + 1].map((episode, index) => (
+                            {serieDetails.episodes[selectedSeason].map((episode, index) => (
                                 <Grid item xs={12} sm={6} key={index}>
                                 <Button
                                     variant="outlined"
