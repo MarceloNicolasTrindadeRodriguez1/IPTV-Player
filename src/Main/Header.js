@@ -23,7 +23,8 @@ const Header = (props) => {
 
   const handleLogout = () => {
     localStorage.setItem('cred_jazmin', '{}');
-    props.setCredentials()
+    props.setCredentials({})
+    props.setPage('home')
   };
 
   return (
@@ -35,7 +36,7 @@ const Header = (props) => {
         <Typography variant="subtitle1" style={{ marginRight: 20, color: 'white' }}>
           {currentTime}
         </Typography>
-        {props.credentials &&
+        {Object.entries(props.credentials).length !== 0 &&
         <IconButton style={{ color: 'white' }} onClick={handleMenuClick}>
           <AccountCircle />
         </IconButton>

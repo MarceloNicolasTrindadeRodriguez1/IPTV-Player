@@ -15,8 +15,8 @@ const App = () => {
 
   useEffect(() => {
     const getAuth = async() => {
-      if(credentials){
-        await axios.get(`http://tvway.pro/player_api.php?username=${credentials.username}&password=${credentials.password}`)
+      if(Object.entries(credentials).length !== 0){
+        await axios.get(`http://${credentials.domain}/player_api.php?username=${credentials.username}&password=${credentials.password}`)
         .then(response =>{
           if(response.data.user_info.auth === 1){
             setPage('dashboard')
