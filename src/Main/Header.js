@@ -31,9 +31,9 @@ const Header = (props) => {
           Jazmin Player PRO 
         </Typography>
         <Typography variant="subtitle1" style={{ marginRight: 20, color: 'white' }}>
-          {currentTime}
+          {currentTime?currentTime:''}
         </Typography>
-        {Object.entries(props.credentials).length !== 0 &&
+        {props.credentials && Object.entries(props.credentials).length !== 0 &&
         <IconButton style={{ color: 'white' }} onClick={handleMenuClick}>
           <AccountCircle />
         </IconButton>
