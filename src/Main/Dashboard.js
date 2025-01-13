@@ -1,14 +1,10 @@
 // src/Dashboard.js
-import React, { useEffect, useState } from 'react';
-import { Grid, Paper, Typography, AppBar, Toolbar, IconButton } from '@mui/material';
+import React from 'react';
+import { Grid, Paper, Typography } from '@mui/material';
 import { styled } from '@mui/system';
 import LiveTvIcon from '@mui/icons-material/LiveTv';
 import TheatersIcon from '@mui/icons-material/Theaters';
 import TvIcon from '@mui/icons-material/Tv';
-import MenuIcon from '@mui/icons-material/Menu';
-import RefreshIcon from '@mui/icons-material/Refresh';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import SettingsIcon from '@mui/icons-material/Settings';
 
 const GradientPaper = styled(Paper)(({ theme, gradient, height }) => ({
   padding: theme.spacing(4),
@@ -27,24 +23,7 @@ const GradientPaper = styled(Paper)(({ theme, gradient, height }) => ({
 }));
 
 const Dashboard = (props) => {
-    const [currentTime, setCurrentTime] = useState('');
 
-
-    useEffect(() => {
-      const updateCurrentTime = () => {
-        const now = new Date();
-        const formattedTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        setCurrentTime(formattedTime);
-      };
-
-      // Update time initially and every minute
-      updateCurrentTime();
-      const timer = setInterval(updateCurrentTime, 60000);
-      
-      
-      // Cleanup interval on unmount
-      return () => clearInterval(timer);
-    }, []);
   const appBarBackgroundColor = '#001f3f'; // original color
 
   return (

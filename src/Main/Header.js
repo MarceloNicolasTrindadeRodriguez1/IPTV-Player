@@ -1,9 +1,6 @@
 // src/Header.js
 import React, { useState } from 'react';
 import { AppBar, Toolbar, Typography, IconButton, Menu, MenuItem } from '@mui/material';
-import SettingsIcon from '@mui/icons-material/Settings';
-import MenuIcon from '@mui/icons-material/Menu';
-import RefreshIcon from '@mui/icons-material/Refresh';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 
 const Header = (props) => {
