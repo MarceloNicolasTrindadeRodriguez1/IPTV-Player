@@ -13,7 +13,7 @@ const Login = (props) => {
   useEffect(() => {
     const getAuth = async () => {
       let credential = JSON.parse(localStorage.getItem('cred_jazmin'));
-      if (Object.entries(credential).length !== 0) {
+      if (credential && Object.entries(credential).length !== 0) {
         try {
           await axios.get(`http://${credential.domain}/player_api.php?username=${credential.username}&password=${credential.password}`)
             .then(response => {
