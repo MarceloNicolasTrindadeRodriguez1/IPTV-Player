@@ -12,7 +12,7 @@ const Login = (props) => {
 
   useEffect(() => {
     const getAuth = async () => {
-      let credential = JSON.parse(localStorage.getItem('cred_jazmin'));
+      let credential = JSON.parse(localStorage.getItem('cred_player'));
       if (credential && Object.entries(credential).length !== 0) {
         try {
           await axios.get(`http://${credential.domain}/player_api.php?username=${credential.username}&password=${credential.password}`)
@@ -54,7 +54,7 @@ const Login = (props) => {
         await axios.get(`http://${domain}/player_api.php?username=${usernameTmp}&password=${passwordTmp}`)
             .then(response => {
                 if (response.data.user_info.auth === 1) {
-                localStorage.setItem('cred_jazmin', JSON.stringify({ username: usernameTmp, password: passwordTmp ,domain:domain}));
+                localStorage.setItem('cred_player', JSON.stringify({ username: usernameTmp, password: passwordTmp ,domain:domain}));
                 props.setCredentials({ username: usernameTmp, password: passwordTmp ,domain:domain });
                 props.setPage('dashboard');
                 } else {
@@ -75,7 +75,7 @@ const Login = (props) => {
             await axios.get(`http://tvway.pro/player_api.php?username=${username}&password=${password}`)
             .then(response => {
                 if (response.data.user_info.auth === 1) {
-                localStorage.setItem('cred_jazmin', JSON.stringify({ username: username, password: password ,domain:'tvway.pro'}));
+                localStorage.setItem('cred_player', JSON.stringify({ username: username, password: password ,domain:'tvway.pro'}));
                 props.setCredentials({ username: username, password: password,domain:'tvway.pro' });
                 props.setPage('dashboard');
                 } else {

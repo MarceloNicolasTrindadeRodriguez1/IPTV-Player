@@ -19,7 +19,7 @@ const Header = (props) => {
   };
 
   const handleLogout = () => {
-    localStorage.setItem('cred_jazmin', '{}');
+    localStorage.setItem('cred_player', '{}');
     props.setCredentials({})
     props.setPage('home')
   };
@@ -28,7 +28,7 @@ const Header = (props) => {
     <AppBar position="static" style={{ backgroundColor: appBarDarkerColor }}>
       <Toolbar>
         <Typography variant="h6" style={{ flexGrow: 1, cursor: 'pointer', color: 'white' }} onClick={() => props.setPage('home')}>
-          Jazmin Player PRO 
+          Payaso Player PRO 
         </Typography>
         <Typography variant="subtitle1" style={{ marginRight: 20, color: 'white' }}>
           {currentTime?currentTime:''}

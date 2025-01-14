@@ -11,7 +11,7 @@ import Login from './Main/Login/Login';
 
 const App = () => {
   const [page,setPage] = useState()
-  const [credentials,setCredentials] = useState(JSON.parse(localStorage.getItem('cred_jazmin')));
+  const [credentials,setCredentials] = useState(JSON.parse(localStorage.getItem('cred_player')));
 
   useEffect(() => {
     const getAuth = async() => {
