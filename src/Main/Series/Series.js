@@ -16,7 +16,7 @@ const Series = (props) => {
   const handlePlayClick = async(episode) => {
     setShowModal(false); 
 
-    setVideoPlaying({isplaying:true,url:`http://${props.credentials.domain}/series/${props.credentials.username}/${props.credentials.password}/${episode.id}.${episode.container_extension}`});
+    setVideoPlaying({isplaying:true,url:`${props.credentials.domain}/series/${props.credentials.username}/${props.credentials.password}/${episode.id}.${episode.container_extension}`});
   };
 
   const handleCloseVideo = () => {
@@ -40,7 +40,7 @@ const Series = (props) => {
     // Fetch and add series to categories
     try {
       const response = await axios.get(
-        `http://${props.credentials.domain}/player_api.php?username=${props.credentials.username}&password=${props.credentials.password}&action=get_series`
+        `${props.credentials.domain}/player_api.php?username=${props.credentials.username}&password=${props.credentials.password}&action=get_series`
       );
       addSeriesToCategories(result, response.data);
     } catch (error) {
@@ -62,7 +62,7 @@ const Series = (props) => {
     const getSeries = async () => {
       try {
         const response = await axios.get(
-          `http://${props.credentials.domain}/player_api.php?username=${props.credentials.username}&password=${props.credentials.password}&action=get_series_categories`
+          `${props.credentials.domain}/player_api.php?username=${props.credentials.username}&password=${props.credentials.password}&action=get_series_categories`
         );
         transformCategories(response.data);
       } catch (error) {
@@ -83,7 +83,7 @@ const Series = (props) => {
     try {
       // Fetch the details for the selected movie
       const response = await axios.get(
-        `http://${props.credentials.domain}/player_api.php?username=${props.credentials.username}&password=${props.credentials.password}&action=get_series_info&series_id=${serie.series_id}`
+        `${props.credentials.domain}/player_api.php?username=${props.credentials.username}&password=${props.credentials.password}&action=get_series_info&series_id=${serie.series_id}`
       );
       setSerieDetails(response.data); // Store the movie details
       setShowModal(true); // Show modal with movie details

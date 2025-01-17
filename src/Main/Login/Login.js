@@ -4,6 +4,7 @@ import { TextField, Button, Container, Typography, Alert, Paper, FormControlLabe
 import axios from 'axios';
 
 const Login = (props) => {
+  const [server, setServer] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -15,7 +16,7 @@ const Login = (props) => {
       let credential = JSON.parse(localStorage.getItem('cred_player'));
       if (credential && Object.entries(credential).length !== 0) {
         try {
-          await axios.get(`http://${credential.domain}/player_api.php?username=${credential.username}&password=${credential.password}`)
+          await axios.get(`${credential.domain}/player_api.php?username=${credential.username}&password=${credential.password}`)
             .then(response => {
               if (response.data.user_info.auth === 1) {
                 props.setCredentials({ username: credential.username, password: credential.password,domain:credential.domain });
@@ -43,15 +44,14 @@ const Login = (props) => {
         const url = new URL(link);
 
         // Retrieve the domain part
-        const domain = url.hostname; // 'tvway.pro'
-        
+        const domain = url.origin; // 'tvway.pro'
         // Retrieve query parameters
         const params = new URLSearchParams(url.search);
         const usernameTmp = params.get('username'); // 'N8TV7J6Y'
         const passwordTmp = params.get('password'); // 'NMH0F4'
-        
+    
 
-        await axios.get(`http://${domain}/player_api.php?username=${usernameTmp}&password=${passwordTmp}`)
+        await axios.get(`${domain}/player_api.php?username=${usernameTmp}&password=${passwordTmp}`)
             .then(response => {
                 if (response.data.user_info.auth === 1) {
                 localStorage.setItem('cred_player', JSON.stringify({ username: usernameTmp, password: passwordTmp ,domain:domain}));
@@ -66,17 +66,21 @@ const Login = (props) => {
       return;
     }else{
 
-        if (username === '' || password === '') {
+        if (username === '' || password === '' || server === '') {
             setError('Please fill in all fields');
             return;
         }
+        if (!server.includes('http://') && !server.includes('https://')) {
+          setError('Make sure to insert the http:// or https://');
+          return;
+      }
     
         try {
-            await axios.get(`http://tvway.pro/player_api.php?username=${username}&password=${password}`)
+            await axios.get(`${server}/player_api.php?username=${username}&password=${password}`)
             .then(response => {
                 if (response.data.user_info.auth === 1) {
-                localStorage.setItem('cred_player', JSON.stringify({ username: username, password: password ,domain:'tvway.pro'}));
-                props.setCredentials({ username: username, password: password,domain:'tvway.pro' });
+                localStorage.setItem('cred_player', JSON.stringify({ username: username, password: password ,domain: server}));
+                props.setCredentials({ username: username, password: password,domain: server});
                 props.setPage('dashboard');
                 } else {
                 setError('Invalid username or password');
@@ -102,6 +106,16 @@ const Login = (props) => {
         />
         {!isAdvanced ? (
           <>
+            <TextField
+              label="Server"
+              type="text"
+              value={server}
+              onChange={(e) => setServer(e.target.value)}
+              fullWidth
+              margin="normal"
+              required
+              placeholder='http://exemple.com'
+            />
             <TextField
               label="Username"
               type="text"

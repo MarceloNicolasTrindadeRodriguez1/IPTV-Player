@@ -22,7 +22,7 @@ const LiveChannel = (props) => {
       };
     });
 
-    await axios.get(`http://${props.credentials.domain}/player_api.php?username=${props.credentials.username}&password=${props.credentials.password}&action=get_live_streams`)
+    await axios.get(`${props.credentials.domain}/player_api.php?username=${props.credentials.username}&password=${props.credentials.password}&action=get_live_streams`)
       .then(list => {
         addChannelsToCategories(result, list.data);
       });
@@ -41,7 +41,7 @@ const LiveChannel = (props) => {
 
   useEffect(() => {
     const getChannels = async () => {
-      await axios.get(`http://${props.credentials.domain}/player_api.php?username=${props.credentials.username}&password=${props.credentials.password}&action=get_live_categories`)
+      await axios.get(`${props.credentials.domain}/player_api.php?username=${props.credentials.username}&password=${props.credentials.password}&action=get_live_categories`)
         .then(async response => {
           transformCategories(response.data);
         }).catch(e => {
@@ -161,7 +161,7 @@ const LiveChannel = (props) => {
             <div style={{ width: "50%", padding: "10px" }}>
               <VideoPlayer
                 key={selectedChannel.stream_id}
-                videoUrl={`http://${props.credentials.domain}/live/${props.credentials.username}/${props.credentials.password}/${selectedChannel.stream_id}.m3u8`} />
+                videoUrl={`${props.credentials.domain}/live/${props.credentials.username}/${props.credentials.password}/${selectedChannel.stream_id}.m3u8`} />
             </div>
            : (
             <></>

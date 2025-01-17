@@ -16,9 +16,10 @@ const App = () => {
   useEffect(() => {
     const getAuth = async() => {
       if(credentials && Object.entries(credentials).length !== 0){
-        await axios.get(`http://${credentials.domain}/player_api.php?username=${credentials.username}&password=${credentials.password}`)
+        await axios.get(`${credentials.domain}/player_api.php?username=${credentials.username}&password=${credentials.password}`)
         .then(response =>{
           if(response.data.user_info.auth === 1){
+            console.log(response.data);
             setPage('dashboard')
           }else{
             setPage('home')
