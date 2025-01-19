@@ -22,6 +22,25 @@ const GradientPaper = styled(Paper)(({ theme, gradient, height }) => ({
   },
 }));
 
+const translations = {
+  English: {
+    live: 'Live TV',
+    movies: 'Movies',
+    tvSeries: 'TV Series',
+  },
+  Spanish: {
+    live: 'En Vivo',
+    movies: 'Películas',
+    tvSeries: 'Series de TV',
+  },
+  French: {
+    live: 'En Direct',
+    movies: 'Films',
+    tvSeries: 'Séries TV',
+  },
+  // Add other languages as needed
+};
+
 const Dashboard = (props) => {
 
   const appBarBackgroundColor = '#001f3f'; // original color
@@ -36,7 +55,7 @@ const Dashboard = (props) => {
           <GradientPaper elevation={3} gradient="linear-gradient(135deg, #0097a7, #80deea)" height="300px" onClick={()=>props.setPage('Live')}>
             <LiveTvIcon style={{ fontSize: 120 }} />
             <Typography variant="h4" component="h2" style={{ marginTop: 10 ,fontWeight:600}}>
-              Live TV
+              {translations[props.language]?.live}
             </Typography>
           </GradientPaper>
         </Grid>
@@ -46,7 +65,7 @@ const Dashboard = (props) => {
           <GradientPaper elevation={3} gradient="linear-gradient(135deg, #ff5722, #ff8a65)" height="300px" onClick={()=>props.setPage('Movie')}>
             <TheatersIcon style={{ fontSize: 90 }} />
             <Typography variant="h4" component="h2" style={{ marginTop: 10,fontWeight:600 }}>
-              Movies
+            {translations[props.language]?.movies}
             </Typography>
           </GradientPaper>
         </Grid>
@@ -56,7 +75,7 @@ const Dashboard = (props) => {
           <GradientPaper elevation={3} gradient="linear-gradient(135deg, #673ab7, #9575cd)" height='300px'  onClick={()=>props.setPage('Serie')}>
             <TvIcon style={{ fontSize: 90 }} />
             <Typography variant="h4" component="h2" style={{ marginTop: 10,fontWeight:600 }}>
-              Series
+            {translations[props.language]?.tvSeries}
             </Typography>
           </GradientPaper>
         </Grid>
@@ -64,7 +83,15 @@ const Dashboard = (props) => {
 
         {/* Footer */}
         <Grid item xs={12} style={{ textAlign: 'center', marginTop: '20px', color: '#fff' }}>
-          <Typography>Expiration: Unlimited</Typography>
+          {props.expiration?
+          <Typography>{props.language === 'Spanish'? 'Expiración' : props.language === 'English'? 'Expiration' : 'Expiration' } : {new Intl.DateTimeFormat(props.language === 'Spanish'? 'es' : props.language === 'English'? 'en' : 'fr' , {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+          }).format(props.expiration)}</Typography>
+          :
+          <></>
+          }
         </Grid>
       </Grid>
     </div>

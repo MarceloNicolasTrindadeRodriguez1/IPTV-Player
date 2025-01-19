@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Dialog, DialogActions, DialogContent, Button, CircularProgress, Typography, Grid, Modal, Box,  } from "@mui/material";
+import { Dialog, DialogActions, DialogContent, Button, CircularProgress, Typography, Grid, Modal, Box, Divider,  } from "@mui/material";
 import './Movies.css'
 
 const Movies = (props) => {
@@ -109,7 +109,8 @@ const Movies = (props) => {
           maxHeight: "100vh",
         }}
       >
-        <h3 style={{ color: 'white' }}>Categories</h3>
+        <h3 style={{ color: 'white' }}>{props.language === 'Spanish'? 'Categorías' : props.language === 'English'? 'Categories' : 'Catégories' }</h3>
+        <Divider  style={{backgroundColor:'grey'}} />
         <ul style={{ padding: 0, margin: 0 }}>
           {moviesList &&
             Object.keys(moviesList).map((categoryId) => (
@@ -345,7 +346,7 @@ const Movies = (props) => {
     >
       <CircularProgress size={80} /> {/* Increase size of CircularProgress */}
       <Typography variant="h4" sx={{ marginTop: 2 }}> {/* Big loading text */}
-        Loading Movies...
+        {props.language === 'Spanish'? 'Cargando Películas' : props.language === 'English'? 'Loading Movies' : 'Chargement Films' }......
       </Typography>
     </Box>
     </>

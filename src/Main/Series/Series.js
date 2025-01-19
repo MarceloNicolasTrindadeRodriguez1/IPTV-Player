@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Dialog, DialogContent, Button, CircularProgress, Typography, Grid, Modal, Box,  } from "@mui/material";
+import { Dialog, DialogContent, Button, CircularProgress, Typography, Grid, Modal, Box, Divider,  } from "@mui/material";
 import './Series.css'
 
 const Series = (props) => {
@@ -115,7 +115,8 @@ const Series = (props) => {
           maxHeight: "100vh",
         }}
       >
-        <h3 style={{ color: 'white' }}>Categories</h3>
+        <h3 style={{ color: 'white' }}>{props.language === 'Spanish'? 'Categorías' : props.language === 'English'? 'Categories' : 'Catégories' }</h3>
+        <Divider  style={{backgroundColor:'grey'}} />
         <ul style={{ padding: 0, margin: 0 }}>
           {seriesList &&
             Object.keys(seriesList).map((categoryId) => (
@@ -410,7 +411,7 @@ const Series = (props) => {
     >
       <CircularProgress size={80} /> {/* Increase size of CircularProgress */}
       <Typography variant="h4" sx={{ marginTop: 2 }}> {/* Big loading text */}
-        Loading Series...
+        {props.language === 'Spanish'? 'Cargando Series de TV' : props.language === 'English'? 'Loading TV Series' : 'Chargement Séries TV' }...
       </Typography>
     </Box>
     </>

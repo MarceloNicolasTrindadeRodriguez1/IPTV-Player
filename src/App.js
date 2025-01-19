@@ -8,10 +8,13 @@ import Header from './Main/Header';
 import Movies from './Main/Movie/Movies'
 import Series from './Main/Series/Series';
 import Login from './Main/Login/Login';
+import AdSense from 'react-adsense'
 
 const App = () => {
   const [page,setPage] = useState()
   const [credentials,setCredentials] = useState(JSON.parse(localStorage.getItem('cred_player')));
+  const [expiration,setExpiration] = useState(new Date())
+  const [language, setLanguage] = useState('Spanish'); 
 
   useEffect(() => {
     const getAuth = async() => {
@@ -20,6 +23,7 @@ const App = () => {
         .then(response =>{
           if(response.data.user_info.auth === 1){
             console.log(response.data);
+            setExpiration(new Date(Number(response.data.user_info.exp_date) * 1000))
             setPage('dashboard')
           }else{
             setPage('home')
@@ -35,26 +39,35 @@ const App = () => {
   
   return (
     <>
-    <Header setPage={setPage} setCredentials={setCredentials} credentials={credentials} />
+    <Header language={language} setLanguage={setLanguage} setPage={setPage} setCredentials={setCredentials} credentials={credentials} />
     {
     page === 'home' ?
-      <Login setPage={setPage} setCredentials={setCredentials} />
+      <Login language={language} setPage={setPage} setCredentials={setCredentials} />
       :
     page === 'dashboard' ?
-      <Dashboard setPage={setPage} />
+      <Dashboard language={language} expiration={expiration} setPage={setPage} />
       :
     page === 'Live' ?
-      <LiveChannel credentials={credentials} />
+      <LiveChannel language={language} credentials={credentials} />
       :
     page === 'Movie' ?
-    <Movies credentials={credentials} />
+    <Movies language={language} credentials={credentials} />
     :
     page === 'Serie' ?
-    <Series credentials={credentials}  />
+    <Series language={language} credentials={credentials}  />
     :
       <>
       </>
-      }
+    }
+    <div>
+      <AdSense.Google
+        client="ca-pub-6167157639317587" // Replace with your AdSense client ID
+        slot="6960546089" // Replace with your Ad unit slot ID
+        style={{ display: "block" }}
+        format="auto"
+        responsive="true"
+      />
+    </div>
     </>
   );
 };

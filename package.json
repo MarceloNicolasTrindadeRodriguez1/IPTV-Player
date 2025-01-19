@@ -11,6 +11,7 @@
     "cra-template": "1.2.0",
     "hls.js": "^1.5.18",
     "react": "^19.0.0",
+    "react-adsense": "^0.1.0",
     "react-dom": "^19.0.0",
     "react-player": "^2.16.0",
     "react-scripts": "5.0.1",

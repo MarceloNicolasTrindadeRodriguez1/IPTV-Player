@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import VideoPlayer from "../VideoPlayer"; 
 import axios from "axios";
 import './LiveChannel.css'
-import { Box, CircularProgress, Typography } from "@mui/material";
+import { Box, CircularProgress, Divider, Typography } from "@mui/material";
 
 const LiveChannel = (props) => {
   const [channelsList, setChannelsList] = useState();
@@ -35,7 +35,6 @@ const LiveChannel = (props) => {
         categoriesArray[category_id].channels.push(channel);
       }
     });
-    console.log('tererer ', categoriesArray);
     setChannelsList(categoriesArray);
   }
 
@@ -77,7 +76,8 @@ const LiveChannel = (props) => {
           maxHeight: '100vh' // Fixed height for scrolling
         }}
         >
-        <h3 style={{ color: 'white' }}>Categories</h3>
+        <h3 style={{ color: 'white' }}>{props.language === 'Spanish'? 'Categorías' : props.language === 'English'? 'Categories' : 'Catégories' }</h3>
+          <Divider  style={{backgroundColor:'grey'}} />
           <ul style={{ padding: 0, margin: 0 }}>
             {Object.keys(channelsList).map((categoryId) => (
               <li 
@@ -121,7 +121,8 @@ const LiveChannel = (props) => {
           
           {selectedCategory ? (
             <>
-            <h3 style={{ color: 'white' }}>Channels</h3>
+            <h3 style={{ color: 'white' }}>{props.language === 'Spanish'? 'Canal' : props.language === 'English'? 'Channel' : 'Chaîne' }</h3>
+            <Divider  style={{backgroundColor:'grey'}} />
             <ul style={{ padding: 0, margin: 0 }}>
               {selectedCategory.channels.map((channel) => (
                 <li 
@@ -182,7 +183,7 @@ const LiveChannel = (props) => {
     >
       <CircularProgress size={80} /> {/* Increase size of CircularProgress */}
       <Typography variant="h4" sx={{ marginTop: 2 }}> {/* Big loading text */}
-        Loading Live Channel...
+        {props.language === 'Spanish'? 'Cargando En Vivo' : props.language === 'English'? 'Loading Live Tv' : 'Chargement TV En Direct' }...
       </Typography>
     </Box>
     </>
